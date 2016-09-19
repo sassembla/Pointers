@@ -26,19 +26,19 @@ public class Pointers : MonoBehaviour {
 	}
 
 	void PointerSwap () {
-		var baseMethod_MethodInfo = typeof(BaseClass).GetMethod("BaseMethod", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-		var newMethod_MethodInfo = typeof(NewClass).GetMethod("NewMethod", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+		var baseMethod_MethodInfo = typeof(BaseClass).GetMethod("BaseMethod");
+		var newMethod_MethodInfo = typeof(NewClass).GetMethod("NewMethod");
 
-		RuntimeHelpers.PrepareMethod(baseMethod_MethodInfo.MethodHandle);
-		RuntimeHelpers.PrepareMethod(newMethod_MethodInfo.MethodHandle);
-
+		var baseIntPtr = baseMethod_MethodInfo.MethodHandle.Value;
+		var newIntPtr = newMethod_MethodInfo.MethodHandle.Value;
+		
 		unsafe {
 			// ready void* pointers.
-			var basePointer = baseMethod_MethodInfo.MethodHandle.Value.ToPointer();
-			var newPointer = newMethod_MethodInfo.MethodHandle.Value.ToPointer();
+			var basePointer = baseIntPtr.ToPointer();
+			var newPointer = newIntPtr.ToPointer();
 			
 			// swap method pointer, *base ---> *new.
-			*((Int64*)new IntPtr(basePointer).ToPointer()) = *((Int64*)new IntPtr(newPointer).ToPointer());
+			*((Int64*)basePointer) = *((Int64*)newPointer);
 		}
 
 		var baseInstance = new BaseClass();
