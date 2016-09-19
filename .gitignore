@@ -1,0 +1,16 @@
+
+Assembly-CSharp-Editor.csproj
+
+Assembly-CSharp.csproj
+
+Assets/VSCode.meta
+
+Assets/VSCode/*
+
+iOS/*
+
+Library/*
+
+obj/*
+
+Pointers.sln
